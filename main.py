@@ -75,12 +75,14 @@ def football_url_get():
 
     url = "https://api.mavin.io/search?q="
 
-# %20
 
     for i in range(len(football_cards_info_list)):
-        url = url + "%20" + football_cards_info_list[i]
 
-    print(url)
+        if i == 0:
+            url = url + football_cards_info_list[i]
+        else:
+            url = url + "%20" + football_cards_info_list[i]
+
 
     football_url_get.url = url
 
@@ -90,7 +92,7 @@ def football_url_get():
 
     headers = CaseInsensitiveDict()
     headers["accept"] = "application/json"
-    headers["X-API-KEY"] = "api-key"
+    headers["X-API-KEY"] = "b11a4c70-219e-4705-a02a-55f6df35244f"
 
 
 
@@ -105,7 +107,6 @@ def football_url_get():
     info_frm.pack()
 
     resp_content_json = resp._content
-
 
     try:
         resp_content = loads(resp_content_json)
@@ -150,7 +151,6 @@ def pokemon_url_get():
         else:
             url = url + "%20" + pokemon_cards_info_list[i]
 
-    print(url)
 
     pokemon_cards.url = url
 
@@ -160,7 +160,7 @@ def pokemon_url_get():
 
     headers = CaseInsensitiveDict()
     headers["accept"] = "application/json"
-    headers["X-API-KEY"] = "api-key"
+    headers["X-API-KEY"] = "b11a4c70-219e-4705-a02a-55f6df35244f"
 
 
 
@@ -172,7 +172,17 @@ def pokemon_url_get():
     resp = requests.get(url, headers=headers)
 
     resp_content_json = resp._content
-    resp_content = loads(resp_content_json)
+
+
+    try:
+        resp_content = loads(resp_content_json)
+    except:
+        error_message = ttk.Label(text="An Error Occurred Most Likely There Are No Matches For Your Search")
+        continue_button_error = ttk.Button(text="Continue", command=start)
+        error_message.pack()
+        continue_button_error.pack()
+
+
     card_market_value = resp_content["marketValue"]
     card_query = resp_content["query"]
     low_value = resp_content["lowestValue"]
