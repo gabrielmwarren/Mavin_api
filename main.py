@@ -11,6 +11,53 @@ window.tk.call("source", "/home/pi/Dev/Azure-ttk-theme/azure.tcl")
 window.tk.call("set_theme", "light")
 
 
+def change_theme():
+    # NOTE: The theme's real name is azure-<mode>
+    if window.tk.call("ttk::style", "theme", "use") == "azure-dark":
+        # Set light theme
+        window.tk.call("set_theme", "light")
+    else:
+        # Set dark theme
+        window.tk.call("set_theme", "dark")
+
+
+def start():
+
+    widget_list = all_children(window)
+    for item in widget_list:
+        item.pack_forget()
+
+    greetings_frm = tk.Frame()
+    greetings_frm.pack(ipady=5)
+
+    switch = ttk.Checkbutton(window, text='Dark Mode', style='Switch.TCheckbutton', command=change_theme)
+
+
+    greeting = tk.Label(master=greetings_frm, text="Hello, What Type Of Card Are You Searching For?")
+    button_football = tk.Button(
+        text="Football",
+        width=25,
+        height=5,
+        bg="brown",
+        fg="gray",
+        command=football_cards,
+    )
+
+    button_pokemon = tk.Button(
+        text="Pokemon",
+        width=25,
+        height=5,
+        bg="yellow",
+        fg="gray",
+        command=pokemon_cards,
+    )
+
+    greeting.pack()
+    button_football.pack(side=tk.LEFT,)
+    button_pokemon.pack(side=tk.RIGHT,)
+    switch.pack(side=tk.RIGHT)
+
+
 
 
 def all_children (window) :
@@ -54,6 +101,9 @@ def football_url_get():
 
     resp = requests.get(url, headers=headers)
 
+    info_frm = ttk.Frame()
+    info_frm.pack()
+
     resp_content_json = resp._content
     resp_content = loads(resp_content_json)
     card_market_value = resp_content["marketValue"]
@@ -62,15 +112,21 @@ def football_url_get():
     high_value = resp_content["highestValue"]
     card_category = resp_content["category"]
 
-    card_query_lbl = tk.Label(text=card_query + ": " + card_category)
-    price_avg_lbl = tk.Label(text="Avg. Price: " + card_market_value)
-    low_price_lbl = tk.Label(text="Lowest Price: " + low_value)
-    high_price_lbl = tk.Label(text="Highest Price: " + high_value)
+    card_query_lbl = ttk.Label(master=info_frm, text=card_query + ": " + card_category)
+    price_avg_lbl = ttk.Label(master=info_frm, text="Avg. Price: " + card_market_value)
+    low_price_lbl = ttk.Label(master=info_frm, text="Lowest Price: " + low_value)
+    high_price_lbl = ttk.Label(master=info_frm, text="Highest Price: " + high_value)
 
     card_query_lbl.pack()
     price_avg_lbl.pack()
     low_price_lbl.pack()
     high_price_lbl.pack()
+
+    frm_buttons = ttk.Frame()
+    frm_buttons.pack(fill=tk.X, ipadx=5, ipady=5)
+
+    btn_contintue = ttk.Button(master=frm_buttons, text="Again", command=start)
+    btn_contintue.pack(side=tk.RIGHT, padx=10, ipadx=10)
 
 
 def pokemon_url_get():
@@ -113,15 +169,23 @@ def pokemon_url_get():
     high_value = resp_content["highestValue"]
     card_category = resp_content["category"]
 
-    card_query_lbl = tk.Label(text=card_query + ": " + card_category)
-    price_avg_lbl = tk.Label(text="Avg. Price: " + card_market_value)
-    low_price_lbl = tk.Label(text="Lowest Price: " + low_value)
-    high_price_lbl = tk.Label(text="Highest Price: " + high_value)
+    card_query_lbl = ttk.Label(text=card_query + ": " + card_category)
+    price_avg_lbl = ttk.Label(text="Avg. Price: " + card_market_value)
+    low_price_lbl = ttk.Label(text="Lowest Price: " + low_value)
+    high_price_lbl = ttk.Label(text="Highest Price: " + high_value)
 
     card_query_lbl.pack()
     price_avg_lbl.pack()
     low_price_lbl.pack()
     high_price_lbl.pack()
+
+    frm_buttons = ttk.Frame()
+    frm_buttons.pack(fill=tk.X, ipadx=5, ipady=5)
+
+    btn_contintue = ttk.Button(master=frm_buttons, text="Again", command=start)
+    btn_contintue.pack(side=tk.RIGHT, padx=10, ipadx=10)
+
+
 
 
 
@@ -132,25 +196,26 @@ def football_cards():
     for item in widget_list:
         item.pack_forget()
 
-    frm_form = tk.Frame(relief=tk.SUNKEN, borderwidth=6)
+
+    frm_form = ttk.Frame()
     frm_form.pack()
 
 
-    intro_lbl =tk.Label(master=frm_form, text="Card Information:")
+    intro_lbl =ttk.Label(master=frm_form, text="Card Information:")
     intro_lbl.grid(row=0, column=1)
 
     
-    info_lbl = tk.Label(master=frm_form, text="")
-    football_cards.info = tk.Entry(master=frm_form, width=50,)
+    info_lbl = ttk.Label(master=frm_form, text="")
+    football_cards.info = ttk.Entry(master=frm_form, width=50,)
     football_cards.info.insert(0, "year + name + company + number")
     info_lbl.grid(row=2, column=0, sticky="e")
     football_cards.info.grid(row=2, column=1)
 
 
-    frm_buttons = tk.Frame(relief=tk.RAISED, borderwidth=3)
+    frm_buttons = ttk.Frame()
     frm_buttons.pack(fill=tk.X, ipadx=5, ipady=5)
 
-    btn_submit = tk.Button(master=frm_buttons, text="Enter", command=football_url_get)
+    btn_submit = ttk.Button(master=frm_buttons, text="Enter", command=football_url_get)
     btn_submit.pack(side=tk.RIGHT, padx=10, ipadx=10)
 
 
@@ -166,62 +231,31 @@ def pokemon_cards():
     for item in widget_list:
         item.pack_forget()
 
-    frm_form = tk.Frame(relief=tk.SUNKEN, borderwidth=6)
+    frm_form = ttk.Frame()
     frm_form.pack()
 
 
-    intro_lbl =tk.Label(master=frm_form, text="Card Information:")
+    intro_lbl =ttk.Label(master=frm_form, text="Card Information:")
     intro_lbl.grid(row=0, column=1)
 
     
-    info_lbl = tk.Label(master=frm_form, text="")
-    pokemon_cards.info = tk.Entry(master=frm_form, width=50,)
+    info_lbl = ttk.Label(master=frm_form, text="")
+    pokemon_cards.info = ttk.Entry(master=frm_form, width=50,)
     pokemon_cards.info.insert(0, "name + number")
     info_lbl.grid(row=2, column=0, sticky="e")
     pokemon_cards.info.grid(row=2, column=1)
 
 
-    frm_buttons = tk.Frame(relief=tk.RAISED, borderwidth=3)
+    frm_buttons = ttk.Frame()
     frm_buttons.pack(fill=tk.X, ipadx=5, ipady=5)
 
-    btn_submit = tk.Button(master=frm_buttons, text="Enter", command=pokemon_url_get)
+    btn_submit = ttk.Button(master=frm_buttons, text="Enter", command=pokemon_url_get)
     btn_submit.pack(side=tk.RIGHT, padx=10, ipadx=10)
 
 
 
 
-greetings_frm = tk.Frame()
-greetings_frm.pack(ipady=5)
-
-
-greeting = tk.Label(master=greetings_frm, text="Hello, What Type Of Card Are You Searching For?")
-button_football = tk.Button(
-    text="Football",
-    width=25,
-    height=5,
-    bg="brown",
-    fg="white",
-    command=football_cards,
-)
-
-button_pokemon = tk.Button(
-    text="Pokemon",
-    width=25,
-    height=5,
-    bg="yellow",
-    fg="red",
-    command=pokemon_cards,
-)
-
-greeting.pack()
-button_football.pack(side=tk.LEFT,)
-button_pokemon.pack(side=tk.RIGHT,)
-
-
-
-
-
-
+start()
 
 
 window.mainloop()
