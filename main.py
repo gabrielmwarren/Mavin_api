@@ -90,7 +90,7 @@ def football_url_get():
 
     headers = CaseInsensitiveDict()
     headers["accept"] = "application/json"
-    headers["X-API-KEY"] = "b11a4c70-219e-4705-a02a-55f6df35244f"
+    headers["X-API-KEY"] = "api-key"
 
 
 
@@ -150,7 +150,7 @@ def pokemon_url_get():
 
     headers = CaseInsensitiveDict()
     headers["accept"] = "application/json"
-    headers["X-API-KEY"] = "b11a4c70-219e-4705-a02a-55f6df35244f"
+    headers["X-API-KEY"] = "api-key"
 
 
 
