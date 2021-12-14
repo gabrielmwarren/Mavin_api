@@ -105,7 +105,17 @@ def football_url_get():
     info_frm.pack()
 
     resp_content_json = resp._content
-    resp_content = loads(resp_content_json)
+
+
+    try:
+        resp_content = loads(resp_content_json)
+    except:
+        error_message = ttk.Label(master=info_frm, text="An Error Occurred Most Likely There Are No Matches For Your Search")
+        continue_button_error = ttk.Button(master=info_frm, text="Continue", command=start)
+        error_message.pack()
+        continue_button_error.pack()
+
+
     card_market_value = resp_content["marketValue"]
     card_query = resp_content["query"]
     low_value = resp_content["lowestValue"]
