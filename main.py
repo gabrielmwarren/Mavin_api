@@ -237,6 +237,8 @@ def football_cards():
 
     btn_submit = ttk.Button(master=frm_buttons, text="Enter", command=football_url_get)
     btn_submit.pack(side=tk.RIGHT, padx=10, ipadx=10)
+    btn_cancel = ttk.Button(master=frm_buttons, text="Cancel", command=start)
+    btn_cancel.pack(side=tk.RIGHT, padx=10, ipadx=10)
 
 
     
@@ -271,6 +273,8 @@ def pokemon_cards():
 
     btn_submit = ttk.Button(master=frm_buttons, text="Enter", command=pokemon_url_get)
     btn_submit.pack(side=tk.RIGHT, padx=10, ipadx=10)
+    btn_cancel = ttk.Button(master=frm_buttons, text="Cancel", command=start)
+    btn_cancel.pack(side=tk.RIGHT, padx=10, ipadx=10)
 
 
 
